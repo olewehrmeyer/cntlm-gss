@@ -74,7 +74,8 @@ install: $(NAME)
 tgz:
 	mkdir -p tmp
 	rm -rf tmp/$(NAME)-$(VER)
-	svn export . tmp/$(NAME)-$(VER)
+	mkdir tmp/$(NAME)-$(VER)
+	git archive HEAD | tar -x -C tmp/$(NAME)-$(VER)
 	tar zcvf $(NAME)-$(VER).tar.gz -C tmp/ $(NAME)-$(VER)
 	rm -rf tmp/$(NAME)-$(VER)
 	rmdir tmp 2>/dev/null || true
@@ -82,7 +83,8 @@ tgz:
 tbz2:
 	mkdir -p tmp
 	rm -rf tmp/$(NAME)-$(VER)
-	svn export . tmp/$(NAME)-$(VER)
+	mkdir tmp/$(NAME)-$(VER)
+	git archive HEAD | tar -x -C tmp/$(NAME)-$(VER)
 	tar jcvf $(NAME)-$(VER).tar.bz2 -C tmp/ $(NAME)-$(VER)
 	rm -rf tmp/$(NAME)-$(VER)
 	rmdir tmp 2>/dev/null || true
@@ -114,7 +116,7 @@ win: buildwin
 buildwin:
 	@echo
 	@echo "* This build target must be run from a Cywgin shell on Windows *"
-	@echo "* and you also need InnoSetup installed                        *"
+	@echo "* and you also need InnoSetup installed						*"
 	@echo
 	rm -f win/cntlm_manual.pdf
 	groff -t -e -mandoc -Tps doc/cntlm.1 | ps2pdf - win/cntlm_manual.pdf

@@ -1,0 +1,12 @@
+.idea/
+cntlm-gss.iml
+
+config/config.h
+config/endian
+config/gethostname
+config/socklen_t
+config/strdup
+configure-stamp
+
+*.o
+cntlm
