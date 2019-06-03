@@ -543,6 +543,17 @@ shortcut:
 				}
 
 				/*
+				 * Header add if missing implementation
+				 */
+                tl = add_header_list;
+                while (tl) {
+                    if (!hlist_in(data[0]->headers, tl->key)) {
+                        data[0]->headers = hlist_mod(data[0]->headers, tl->key, tl->value, 0);
+                    }
+                    tl = tl->next;
+                }
+
+				/*
 				 * Also remove runaway P-A from the client (e.g. Basic from N-t-B), which might 
 				 * cause some ISAs to deny us, even if the connection is already auth'd.
 				 */
@@ -788,6 +799,17 @@ int prepare_http_connect(int sd, struct auth_s *credentials, const char *thost) 
 		data1->headers = hlist_mod(data1->headers, tl->key, tl->value, 1);
 		tl = tl->next;
 	}
+
+    /*
+    * Header add if missing implementation
+    */
+    tl = add_header_list;
+    while (tl) {
+        if (!hlist_in(data[0]->headers, tl->key)) {
+            data[0]->headers = hlist_mod(data[0]->headers, tl->key, tl->value, 0);
+        }
+        tl = tl->next;
+    }
 
 	if (debug)
 		printf("Starting authentication...\n");

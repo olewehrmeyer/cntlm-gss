@@ -60,6 +60,7 @@ typedef struct {
 } proxy_t;
 
 extern hlist_t header_list;			/* forward_request() */
+extern hlist_t add_header_list;			/* forward_request() */
 extern hlist_t users_list;			/* socks5_thread() */
 extern plist_t scanner_agent_list;		/* scanner_hook() */
 extern plist_t noproxy_list;			/* proxy_thread() */ 

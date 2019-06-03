@@ -105,6 +105,7 @@ plist_t parent_list = NULL;
  * UserAgents for the scanner plugin.
  */
 hlist_t header_list = NULL;			/* forward_request() */
+hlist_t add_header_list = NULL;			/* forward_request() */
 hlist_t users_list = NULL;			/* socks5_thread() */
 plist_t scanner_agent_list = NULL;		/* scanner_hook() */
 plist_t noproxy_list = NULL;			/* proxy_thread() */
@@ -1040,6 +1041,23 @@ int main(int argc, char **argv) {
 
 			free(tmp);
 		}
+
+        /*
+         * Accept only headers not specified on the command line.
+         * Command line has higher priority.
+         */
+        while ((tmp = config_pop(cf, "AddHeader"))) {
+            if (is_http_header(tmp)) {
+                head = get_http_header_name(tmp);
+                if (!hlist_in(add_header_list, head))
+                    add_header_list = hlist_add(add_header_list, head, get_http_header_value(tmp),
+                                            HLIST_ALLOC, HLIST_NOALLOC);
+                free(head);
+            } else
+                syslog(LOG_ERR, "Invalid header format: %s\n", tmp);
+
+            free(tmp);
+        }
 
 		/*
 		 * Add the rest of parent proxies.
