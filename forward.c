@@ -805,8 +805,8 @@ int prepare_http_connect(int sd, struct auth_s *credentials, const char *thost) 
     */
     tl = add_header_list;
     while (tl) {
-        if (!hlist_in(data[0]->headers, tl->key)) {
-            data[0]->headers = hlist_mod(data[0]->headers, tl->key, tl->value, 0);
+        if (!hlist_in(data1->headers, tl->key)) {
+            data1->headers = hlist_mod(data1->headers, tl->key, tl->value, 0);
         }
         tl = tl->next;
     }
